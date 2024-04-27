@@ -46,9 +46,8 @@ def hidenum (line):
     linesplit[-1]=newnumber
     return ' '.join(linesplit)
 
-"""в main"""
+# -*- coding: utf-8 -*-
 
 operation = data_executed()
 sorted5 = sorted_last_five(operation)
 print (output_str())
-#output_str()
