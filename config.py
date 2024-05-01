@@ -1,1 +1,0 @@
-#path = C:\Users\malov\PycharmProjects\course_3\data\operations.json

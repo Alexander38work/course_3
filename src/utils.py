@@ -5,14 +5,14 @@ import datetime
 def get_data():
     """загрузить данные из файла"""
 
-    with open('operations.json', encoding="UTF-8") as file:
-        question_list = json.load(file)
-        return question_list
+    with open('../data/operations.json', encoding="UTF-8") as file:
+        transaction_list = json.load(file)
+        return transaction_list
 
 
-def data_executed ():
-    """отфильтровать по исполненным пладтежам и добавить их отдельный    словарь"""
-    all_operations = get_data()
+def data_executed (transaction_list):
+    """отфильтровать по исполненным платежам и добавить их отдельный    словарь"""
+    all_operations = transaction_list
     executed = []
     for operation in all_operations:
         if operation.get ('state') == 'EXECUTED':
@@ -22,17 +22,19 @@ def data_executed ():
 
 def sorted_last_five (operations, qty=5):
     """взять заданного количества последних платежей"""
-    date_sorted = sorted(operation, key=lambda operation: datetime.datetime.fromisoformat(operation['date']), reverse=True)
+    date_sorted = sorted(operations, key=lambda operation: datetime.datetime.fromisoformat(operation['date']), reverse=True)
     return date_sorted[:qty]
 
 
-def output_str():
-    """функция для вывода итогов"""
+def output_str(sorted5):
+    """функция для вывода итогов в консоль"""
     for i in sorted5:
         date = datetime.datetime.fromisoformat(i["date"])
         print (f'{date.strftime('%d.%m.%Y')} {i['description']}\n'
                f'{hidenum(i.get('from', '*'))} -> {hidenum(i.get('to','*'))}\n'
                f'{i["operationAmount"]["amount"]} {i["operationAmount"]["currency"]["name"]}\n')
+
+
 
 
 def hidenum (line):
@@ -45,9 +47,3 @@ def hidenum (line):
     else: newnumber = (number[:4]+' '+number[4:6]+'** **** '+number[-4:])
     linesplit[-1]=newnumber
     return ' '.join(linesplit)
-
-# -*- coding: utf-8 -*-
-
-operation = data_executed()
-sorted5 = sorted_last_five(operation)
-print (output_str())
